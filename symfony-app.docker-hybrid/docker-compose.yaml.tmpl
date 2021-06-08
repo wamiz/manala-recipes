@@ -27,6 +27,7 @@ services:
   database:
     image: 'mysql:{{ $mysql.version }}'
     ports: [3306]
+    command: --max_allowed_packet=1024M
     environment:
       MYSQL_USER: 'app'
       MYSQL_PASSWORD: 'app'
