@@ -1,5 +1,6 @@
 {{- $has_mysql := .Vars.system.mysql.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
+{{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
 
 # Relative root dir ("."|".."|"../.."|…)
 _ROOT_DIR := $(patsubst ./%,%,$(patsubst %/.manala/Makefile,%,./$(filter %.manala/Makefile,$(MAKEFILE_LIST))))
@@ -23,6 +24,8 @@ symfony := symfony
 php := $(symfony) php
 composer := $(symfony) composer
 
+APP_DOMAINS := {{ .Vars.system.app_name }}
+
 HELP += $(call help_section, Environment)
 
 HELP += $(call help,setup,             Setup the development environment)
@@ -45,18 +48,16 @@ setup@integration: setup-symfony@integration
 setup-symfony:
 	$(symfony) server:ca:install
 	$(symfony) proxy:start
-	$(MAKE) setup-domain
+	echo $(APP_DOMAINS) | xargs $(symfony) proxy:domain:attach
 
 setup-symfony@integration:
 	$(symfony) server:ca:install
-
-setup-domain:
-	$(symfony) proxy:domain:attach {{ .Vars.system.app_name }}
 
 _up:
 	$(dc) up --detach
 	{{- if $has_mysql }} database{{ end }}
 	{{- if $has_redis }} redis{{ end }}
+	{{- if $has_redis }} mailcatcher{{ end }}
 
 	{{ if $has_mysql -}}
 	@$(call message_warning, Waiting for the database to be ready...)
