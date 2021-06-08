@@ -11,6 +11,7 @@ A [Manala recipe](https://github.com/manala/manala-recipes) for projects using t
     * [Debian](https://hub.docker.com/editions/community/docker-ce-server-debian)
     * [macOS](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
     * [Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 * [Symfony CLI](https://symfony.com/doc/current/setup/symfony_server.html) (with [local proxy support](https://symfony.com/doc/current/setup/symfony_server.html#setting-up-the-local-proxy))
 * PHP and Node.js must be installed by yourself on your machine
 
@@ -37,12 +38,12 @@ Those files will be used by:
 - NVM when using `nvm use`
 - GitHub Actions, thanks to [the action `setup-environment`](#github-actions)
 
-**It is important to use `symfony php` and not `php` directly for running commands, thanks to its [Docker integration](https://symfony.com/doc/current/setup/symfony_server.html#docker-integration) 
-it automatically exposes environments variables from Docker (eg: `DATABASE_URL`, `REDIS_URL`, ...) to PHP.**
+**It is important to use `symfony php` and not `php` directly, thanks to [Symfony CLI's Docker integration](https://symfony.com/doc/current/setup/symfony_server.html#docker-integration) 
+it automatically exposes environment variables from Docker (eg: `DATABASE_URL`, `REDIS_URL`, ...) to PHP.**
 
 ## Quick start
 
-In a shell terminal, change directory to your app, and run the following commands:
+In a shell terminal, change directory to your app and run the following commands:
 
 ```shell
 $ cd /path/to/my/app
@@ -301,44 +302,43 @@ reload-db@test:
 
 ### Tools
 
-#### Admin UI for MySQL
-
-Run `make run-phpmyadmin` to run a local [PhpMyAdmin](https://github.com/phpmyadmin/phpmyadmin) instance
-
-#### Admin UI for Redis
-
-Run `make run-phpredisadmin` to run a local [PhpRedisAdmin](https://github.com/erikdubbelboer/phpRedisAdmin) instance.
+- run `make run-phpmyadmin` to start a local [PhpMyAdmin](https://github.com/phpmyadmin/phpmyadmin) instance
+- run `make run-phpredisadmin` to start a local [PhpRedisAdmin](https://github.com/erikdubbelboer/phpRedisAdmin) instance.
 
 ### Installing PHP on your machine
 
-Sur un OS Debian ou Ubuntu, il est recommandé d'utiliser le [PPA ondrej/php](https://launchpad.net/~ondrej/+archive/ubuntu/php/)
-qui permet d'installer facilement plusieurs versions de PHP. Il est également possible d'utiliser [phpenv](https://github.com/phpenv/phpenv-installer)
-ou [brew](https://formulae.brew.sh/formula/php).
+#### Debian/Ubuntu 
 
-Pour le PPA ondrej/php :
+On Debian or Ubuntu, it's recommended to use [deb.sury.org](https://deb.sury.org/#php-packages) to install multiple PHP versions. 
+You can also use [phpenv](https://github.com/phpenv/phpenv-installer) or [brew](https://formulae.brew.sh/formula/php).
 
+If using deb.sury.org, you can run the following commands:
 ```shell
-sudo add-apt-repository ppa:ondrej/php
-sudo apt-get update
+# install PHP 7.4
+sudo apt install php7.4 php7.4-{zip,opcache,acpu,xdebug,fpm} php7.4-{pgsql,mysql} php7.4-{json,intl,curl,mbstring,xml,gd}
 
-install_php() {
-  VERSION=$1
-  sudo apt install php$VERSION \
-     php$VERSION-{zip,opcache,acpu,xdebug,fpm} \
-     php$VERSION-{pgsql,mysql} \
-     php$VERSION-{intl,curl,mbstring,xml,gd}
-}
-
-install_php 7.4
-install_php 8.0
+# install PHP 8.0
+sudo apt install php8.0 php8.0-{zip,opcache,acpu,xdebug,fpm} php8.0-{pgsql,mysql} php8.0-{intl,curl,mbstring,xml,gd}
 ```
 
-### Activer/désactiver XDebug
+#### MacOS
 
-L'extension XDebug est activée par défaut après son installation. Il n'est pas souhaitable que XDebug soit tout le temps activé pour des raisons de performances.
-Pour désactiver XDebug pour toutes les versions de PHP et pour toutes les SAPI (CLI, FPM, ...), lancer `sudo phpdismod -v ALL -s ALL xdebug`.
+You can use [brew](https://formulae.brew.sh/formula/php) to instal multiple PHP versions.
 
-Pour activer XDebug sur un projet, il faut modifier le `php.ini` (**du projet**) et dé-commenter les lignes suivantes :
+```
+# install PHP 7.4
+brew install php@7.4
+
+# install PHP 8.0
+brew install php@8.0 
+```
+
+### Enable/disable XDebug
+
+XDebug is enabled by default after its installation, but you don't want it to be always enabled for performance issues.
+To globally disable XDebug, you can run `sudo phpdismod -v ALL -s ALL xdebug` (Debian).
+
+To enable XDebug for your project, you can update your `.manala.yml` uncomment the following lines and then run `manala up`:
 
 ```ini
 zend_extension=xdebug.so
@@ -346,18 +346,27 @@ xdebug.remote_enable=1
 xdebug.remote_autostart=1
 ```
 
-Pour vérifier si XDebug est bien activé, lancer `symfony php-fpm -i | grep xdebug` et plusieurs lignes de configuration devraient s'afficher.
+To check if XDebug is enabled, run `symfony php-fpm -i | grep xdebug`.
 
-## Installer Node.js sur sa machine
+## Installing Node.js on your machine
 
-Sur un OS Debian, Ubuntu ou macOS, il est recommandé d'utiliser [nvm](https://github.com/nvm-sh/nvm) qui permet d'installer et utiliser
-très simplement plusieurs versions de Node.js.
-Suivre les étapes d'installation via https://github.com/nvm-sh/nvm#installing-and-updating.
+On Debian, Ubuntu or macOS, it's recommended to use [nvm](https://github.com/nvm-sh/nvm) to easily install and manage multiple Node.js versions.
 
-Il faudra ensuite lancer `nvm use` dans le dossier du projet pour automatiquement utiliser la bonne version de Node.js (renseignéee dans
-le fichier `.nvmrc`).
+It's required to run `nvm use` in the project folder to automatically switch to the good Node.js version (from the `.nvmrc` file).
 
-L'installation de `yarn` se fait via un `npm intall --global yarn`.
+:information_source: For zsh and [Oh My Zsh](https://ohmyz.sh/) users, it's possible to use the [dedicated plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/nvm) by using the following configuration:
+```shell
+# .zshrc
 
-Pour ceux utilisant zsh, il est possible d'utiliser le plugin [](https://github.com/aspirewit/zsh-nvm-auto-switch)
-qui permet d'automatiquement lancer `nvm use` lorsqu'un fichier `.nvmrc` est détecté.
+# Will autoload NVM
+NVM_AUTOLOAD=1
+
+plugins=(... nvm)
+
+# The following commands are not required anymore, since the Oh My Zsh nvm plugin already loads nvm. 
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+```
+
+`yarn` can be installed through `npm install --global yarn`.
