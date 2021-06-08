@@ -1,0 +1,46 @@
+{{- with .Vars.system -}}
+
+####################################################################
+# !!! REMINDER !!!                                                 #
+# Don't forget to run `manala up` each time you update this file ! #
+####################################################################
+
+manala:
+    recipe: symfony-app.docker-hybrid
+    repository: https://github.com/Wamiz/manala-recipes.git
+
+##########
+# System #
+##########
+
+system:
+    app_name: {{ .app_name | toYaml }}
+    timezone: Etc/UTC
+
+    php:
+        configs:
+            # XDebug
+            - config: |
+                ; Comment/uncomment the following lines to disable/enable XDebug
+                ;zend_extension=xdebug.so
+                ;xdebug.remote_enable=1
+                ;xdebug.remote_autostart=1
+
+            # App
+            - config: |
+                ;App specific configuration
+
+    {{- if .mysql.version }}
+    mysql:
+        version: {{ .mysql.version | toYaml }}
+        init: |
+            CREATE DATABASE IF NOT EXISTS `app_test`;
+            GRANT ALL ON `app_test`.* TO 'app'@'%';
+    {{- end }}
+
+    {{- if .redis.version }}
+    redis:
+        version: {{ .redis.version | toYaml }}
+    {{- end }}
+
+{{- end }}
