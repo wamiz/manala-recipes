@@ -24,6 +24,8 @@ symfony := symfony
 php := $(symfony) php
 composer := $(symfony) composer
 
+APP_DOMAINS := {{ .Vars.system.app_name }}
+
 HELP += $(call help_section, Environment)
 
 HELP += $(call help,setup,             Setup the development environment)
@@ -46,13 +48,10 @@ setup@integration: setup-symfony@integration
 setup-symfony:
 	$(symfony) server:ca:install
 	$(symfony) proxy:start
-	$(MAKE) setup-domain
+	echo $(APP_DOMAINS) | xargs $(symfony) proxy:domain:attach
 
 setup-symfony@integration:
 	$(symfony) server:ca:install
-
-setup-domain:
-	$(symfony) proxy:domain:attach {{ .Vars.system.app_name }}
 
 _up:
 	$(dc) up --detach
