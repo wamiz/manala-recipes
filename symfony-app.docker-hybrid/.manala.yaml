@@ -32,5 +32,7 @@ system:
         # @option {"label": "Redis version"}
         # @schema {"enum": [null, "*"]}
         version: ~
-        # @schema {"type": ["object", "array"]}
-        config: {}
+    mailcatcher:
+        # @option {"label": "Mailcatcher version"}
+        # @schema {"enum": [null, "*"]}
+        version: ~

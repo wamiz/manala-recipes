@@ -1,5 +1,6 @@
 {{- $has_mysql := .Vars.system.mysql.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
+{{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
 
 # Relative root dir ("."|".."|"../.."|…)
 _ROOT_DIR := $(patsubst ./%,%,$(patsubst %/.manala/Makefile,%,./$(filter %.manala/Makefile,$(MAKEFILE_LIST))))
@@ -57,6 +58,7 @@ _up:
 	$(dc) up --detach
 	{{- if $has_mysql }} database{{ end }}
 	{{- if $has_redis }} redis{{ end }}
+	{{- if $has_redis }} mailcatcher{{ end }}
 
 	{{ if $has_mysql -}}
 	@$(call message_warning, Waiting for the database to be ready...)

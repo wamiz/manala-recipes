@@ -6,6 +6,7 @@ version: '3.6'
 
 {{- $has_mysql := .Vars.system.mysql.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
+{{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
 
 {{ if or ($has_mysql) ($has_redis) }}
 
@@ -70,5 +71,15 @@ services:
     ports: [80]
     environment:
       REDIS_1_HOST: 'redis'
+
+{{- end }}
+
+{{- if $has_mailcatcher }}
+
+  mailcatcher:
+    image: 'schickling/mailcatcher'
+    ports: [1025, 1080]
+    environment:
+      TZ: {{ .Vars.system.timezone }}
 
 {{- end }}
