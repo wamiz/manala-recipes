@@ -26,64 +26,68 @@ php := $(symfony) php
 composer := $(symfony) composer
 
 APP_DOMAINS := {{ .Vars.system.app_name }}
+MANDATORY_CONTAINERS := {{- if $has_mysql }} database{{ end }}
+                        {{- if $has_redis }} redis{{ end }}
+                        {{- if $has_redis }} mailcatcher{{ end }}
+                        {{- if $has_rabbitmq }} rabbitmq{{ end }}
 
 HELP += $(call help_section, Environment)
 
-HELP += $(call help,setup,             Setup the development environment)
-setup: setup-symfony
-	$(MAKE) up
-	$(setup)
-	@echo
-	@$(call message_success, The development environment has been successfully set up.)
-	@echo
-
-HELP += $(call help,setup@integration, Setup the integration environment)
-setup@integration: export APP_ENV=test
-setup@integration: setup-symfony@integration
-	$(MAKE) _up
-	$(setup_integration)
-	@echo
-	@$(call message_success, The integration environment has been successfully set up.)
-	@echo
-
-setup-symfony:
+HELP += $(call help,install,             Install the environment)
+install:
 	$(symfony) server:ca:install
 	$(symfony) proxy:start
 	echo $(APP_DOMAINS) | xargs $(symfony) proxy:domain:attach
 
-setup-symfony@integration:
+	$(MAKE) up
+	$(install)
+	@echo
+	@$(call message_success, The environment has been successfully installed.)
+	@echo
+
+HELP += $(call help,install@integration, Install the environment (integration))
+install@integration: export APP_ENV=test
+install@integration:
 	$(symfony) server:ca:install
+	$(MAKE) up
+	$(install_integration)
+	@echo
+	@$(call message_success, The integration environment has been successfully installed.)
+	@echo
 
 _up:
-	$(dc) up --detach
-	{{- if $has_mysql }} database{{ end }}
-	{{- if $has_redis }} redis{{ end }}
-	{{- if $has_redis }} mailcatcher{{ end }}
-	{{- if $has_rabbitmq }} rabbitmq{{ end }}
+	$(dc) up --detach $(MANDATORY_CONTAINERS)
 
+_start:
+	$(dc) start $(MANDATORY_CONTAINERS)
+
+_wait_for_database:
 	{{ if $has_mysql -}}
 	@$(call message_warning, Waiting for the database to be ready...)
 	@until docker inspect -f {{ "{{.State.Health.Status}}" }} `$(dc) ps -q database` | grep -q "healthy"; do \
-      $(call message_warning, Waiting...); \
-      sleep 1; \
+	  $(call message_warning, Waiting...); \
+	  sleep 1; \
 	done
 	@$(call message_success, The database is ready!)
 	{{- end }}
 
-HELP += $(call help,up,                Start the development environment)
-up:
-	$(MAKE) _up
-	$(symfony) proxy:start
+_post_start_success:
 	@echo
 	@$(call message_success, You can now run the Symfony server)
 	@echo
 
-HELP += $(call help,halt,              Stop the development environment)
-halt:
+HELP += $(call help,up,                  Update and start the environment)
+up: _up _wait_for_database _post_start_success
+
+HELP += $(call help,start,               Start the environment)
+start: _start _wait_for_database _post_start_success
+
+HELP += $(call help,stop,                Stop the environment)
+stop:
 	$(dc) stop
 
-HELP += $(call help,destroy,           Destroy the development environment)
-destroy: halt
+HELP += $(call help,down,                Stop and remove the environment)
+down: stop
 	$(dc) down --volumes
 	@echo
 	@$(call message_error, ALL CONTAINERS HAVE BEEN DESTROYED)
@@ -92,7 +96,7 @@ destroy: halt
 HELP += $(call help_section, Development tools)
 
 {{ if $has_mysql -}}
-HELP += $(call help,run-phpmyadmin,    Start a PhpMyAdmin web interface)
+HELP += $(call help,run-phpmyadmin,    Start a web interface for PhpMyAdmin)
 run-phpmyadmin:
 	$(dc) up --detach phpmyadmin
 	@echo
@@ -101,7 +105,7 @@ run-phpmyadmin:
 {{- end }}
 
 {{ if $has_redis -}}
-HELP += $(call help,run-phpredisadmin, Start a PhpRedisAdmin web interface)
+HELP += $(call help,run-phpredisadmin, Start a web interface for PhpRedisAdmin)
 run-phpredisadmin:
 	$(dc) up --detach phpredisadmin
 	@echo
@@ -109,13 +113,13 @@ run-phpredisadmin:
 	@echo{{- end }}
 
 {{ if $has_mailcatcher -}}
-HELP += $(call help,open-mailcatcher,  Open the MailCatcher web interface)
+HELP += $(call help,open-mailcatcher,  Open the web interface for MailCatcher)
 open-mailcatcher:
 	$(symfony) open:local:webmail
 {{- end }}
 
 {{ if $has_rabbitmq -}}
-HELP += $(call help,open-rabbitmq,     Open the RabbitMQ web interface)
+HELP += $(call help,open-rabbitmq,     Open the web interface for RabbitMQ)
 open-rabbitmq:
 	$(symfony) open:local:rabbitmq
 	@$(call message_success, Use \"guest\" as username and \"guest\" as password.)
