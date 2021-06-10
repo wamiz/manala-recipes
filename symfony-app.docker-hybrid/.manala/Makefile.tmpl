@@ -108,4 +108,17 @@ run-phpredisadmin:
 	@$(call message_success, You can now open http://`$(dc) port phpredisadmin 80` to access PhpRedisAdmin)
 	@echo{{- end }}
 
+{{ if $has_mailcatcher -}}
+HELP += $(call help,open-mailcatcher,  Open the MailCatcher web interface)
+open-mailcatcher:
+	$(symfony) open:local:webmail
+{{- end }}
+
+{{ if $has_rabbitmq -}}
+HELP += $(call help,open-rabbitmq,     Open the RabbitMQ web interface)
+open-rabbitmq:
+	$(symfony) open:local:rabbitmq
+	@$(call message_success, Use \"guest\" as username and \"guest\" as password.)
+{{- end }}
+
 HELP += $(call help_section, Project)
