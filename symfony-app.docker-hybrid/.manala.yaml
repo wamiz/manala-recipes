@@ -36,3 +36,7 @@ system:
         # @option {"label": "Mailcatcher version"}
         # @schema {"enum": [null, "*"]}
         version: ~
+    rabbitmq:
+        # @option {"label": "RabbitMQ version"}
+        # @schema {"enum": [null, "*"]}
+        version: ~
