@@ -43,4 +43,14 @@ system:
         version: {{ .redis.version | toYaml }}
     {{- end }}
 
+    {{- if .mailcatcher.version }}
+    mailcatcher:
+        version: {{ .mailcatcher.version | toYaml }}
+    {{- end }}
+
+    {{- if .rabbitmq.version }}
+    rabbitmq:
+        version: {{ .rabbitmq.version | toYaml }}
+    {{- end }}
+
 {{- end }}
