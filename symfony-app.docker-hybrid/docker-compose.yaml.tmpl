@@ -93,7 +93,7 @@ services:
 {{- if $has_rabbitmq }}
 
   rabbitmq:
-    image: 'rabbitmq:alpine'
+    image: 'rabbitmq:management-alpine'
     ports: [5672, 15672]
     environment:
       TZ: {{ .Vars.system.timezone }}
