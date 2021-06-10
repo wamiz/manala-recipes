@@ -55,15 +55,15 @@ Edit the `Makefile` at the root directory of your project and add the following 
 ```makefile
 -include .manala/Makefile
 
-# This function will be called at the end of "make setup"
-define setup
+# This function will be called at the end of "make install"
+define install
 	# For example:
 	# $(MAKE) install-app
 	# $(MAKE) init-db@test
 endef
 
-# This function will be called at the end of "make setup@integration"
-define setup_integration
+# This function will be called at the end of "make install@integration"
+define install_integration
 	# For example:
 	# $(MAKE) install-app@integration
 endef
@@ -86,37 +86,47 @@ Help:
   help This help 	
 
 Environment:   
-  setup              Setup the development environment   
-  setup@integration  Setup the integration environment   
-  up                 Start the development environment   
-  halt               Stop the development environment   
-  destroy            Destroy the development environment 	
+  install              Install the environment   
+  install@integration  Install the environment (integration)   
+  up                   Update and start the environment   
+  start                Start the environment   
+  stop                 Stop the environment   
+  down                 Stop and remove the environment 	
+
+Development tools:   
+  run-phpmyadmin     Start a web interface for PhpMyAdmin   
+  run-phpredisadmin  Start a web interface for PhpRedisAdmin   
+  open-mailcatcher   Open the web interface for MailCatcher   
+  open-rabbitmq      Open the web interface for RabbitMQ 	
 
 Project:
-  install-app:             Install application
-  install-app@integration: Install application in integration environment
 ```
 
 ## Docker interaction
 
 Initialise Docker Compose containers and your app:
 ```bash
-make setup
+make install
 ```
 
-Start Docker Compose containers:
+Update and start Docker Compose containers:
 ```bash
 make up
 ```
 
+Start Docker Compose containers:
+```bash
+make start
+```
+
 Stop Docker Compose containers:
 ```bash
-make halt
+make stop
 ```
 
 Stop and remove Docker Compose containers:
 ```shell
-make destroy
+make down
 ```
 
 ## System
@@ -241,14 +251,14 @@ Add in your `Makefile`:
 ```makefile
 # ...
 
-# This function will be called during "make setup"
-define setup
+# This function will be called during "make install"
+define install
     $(MAKE) install-app
     $(MAKE) init-db@test
 endef
 
-# This function will be called during "make setup@integration"
-define setup_integration
+# This function will be called during "make install@integration"
+define install_integration
     $(MAKE) install-app@integration
 endef
 
@@ -304,6 +314,8 @@ reload-db@test:
 
 - run `make run-phpmyadmin` to start a local [PhpMyAdmin](https://github.com/phpmyadmin/phpmyadmin) instance
 - run `make run-phpredisadmin` to start a local [PhpRedisAdmin](https://github.com/erikdubbelboer/phpRedisAdmin) instance.
+- run `make open-mailcatcher` to open a local [MailCatcher Web UI](https://mailcatcher.me).
+- run `make open-rabbitmq` to open a local [RabbitMQ Management Web UI](https://www.rabbitmq.com/management.html).
 
 ### Installing PHP on your machine
 
@@ -369,4 +381,6 @@ plugins=(... nvm)
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 ```
 
-`yarn` can be installed through `npm install --global yarn`.
+### Yarn
+
+The [package manager `yarn`](https://yarnpkg.com/) can be installed with `npm install --global yarn`.
