@@ -13,7 +13,9 @@ A [Manala recipe](https://github.com/manala/manala-recipes) for projects using t
     * [Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 * [Symfony CLI](https://symfony.com/doc/current/setup/symfony_server.html) (with [local proxy support](https://symfony.com/doc/current/setup/symfony_server.html#setting-up-the-local-proxy))
-* PHP and Node.js must be installed by yourself on your machine
+* PHP and Node.js must be installed by yourself on your machine, see:
+    * [Installing PHP on your machine](#installing-php-on-your-machine)
+    * [Installing Node.js on your machine](#installing-nodejs-on-your-machine)
 
 ## Init
 
