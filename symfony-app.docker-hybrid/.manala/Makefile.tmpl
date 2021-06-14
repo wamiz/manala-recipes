@@ -55,6 +55,9 @@ install@integration:
 	@$(call message_success, The integration environment has been successfully installed.)
 	@echo
 
+_symfony_proxy_start:
+	$(symfony) proxy:start
+
 _up:
 	$(dc) up --detach $(MANDATORY_CONTAINERS)
 
@@ -77,10 +80,10 @@ _post_start_success:
 	@echo
 
 HELP += $(call help,up,                  Update and start the environment)
-up: _up _wait_for_database _post_start_success
+up: _symfony_proxy_start _up _wait_for_database _post_start_success
 
 HELP += $(call help,start,               Start the environment)
-start: _start _wait_for_database _post_start_success
+start: _symfony_proxy_start _start _wait_for_database _post_start_success
 
 HELP += $(call help,stop,                Stop the environment)
 stop:
