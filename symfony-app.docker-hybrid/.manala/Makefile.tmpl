@@ -1,4 +1,4 @@
-{{- $has_mysql := .Vars.system.mysql.version -}}
+{{- $has_mariadb := .Vars.system.mariadb.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
 {{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
 {{- $has_rabbitmq := .Vars.system.rabbitmq.version -}}
@@ -26,7 +26,7 @@ php := $(symfony) php
 composer := $(symfony) composer
 
 APP_DOMAINS := {{ .Vars.system.app_name }}
-MANDATORY_CONTAINERS := {{- if $has_mysql }} database{{ end }}
+MANDATORY_CONTAINERS := {{- if $has_mariadb }} database{{ end }}
                         {{- if $has_redis }} redis{{ end }}
                         {{- if $has_redis }} mailcatcher{{ end }}
                         {{- if $has_rabbitmq }} rabbitmq{{ end }}
@@ -65,7 +65,7 @@ _start:
 	$(dc) start $(MANDATORY_CONTAINERS)
 
 _wait_for_database:
-	{{ if $has_mysql -}}
+	{{ if $has_mariadb -}}
 	@$(call message_warning, Waiting for the database to be ready...)
 	@until docker inspect -f {{ "{{.State.Health.Status}}" }} `$(dc) ps -q database` | grep -q "healthy"; do \
 	  $(call message_warning, Waiting...); \
@@ -98,7 +98,7 @@ down: stop
 
 HELP += $(call help_section, Development tools)
 
-{{ if $has_mysql -}}
+{{ if $has_mariadb -}}
 HELP += $(call help,run-phpmyadmin,    Start a web interface for PhpMyAdmin)
 run-phpmyadmin:
 	$(dc) up --detach phpmyadmin
