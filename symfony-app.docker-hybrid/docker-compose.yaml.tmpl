@@ -4,15 +4,15 @@
 
 version: '3.6'
 
-{{- $has_mysql := .Vars.system.mysql.version -}}
+{{- $has_mariadb := .Vars.system.mariadb.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
 {{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
 {{- $has_rabbitmq := .Vars.system.rabbitmq.version -}}
 
-{{ if or ($has_mysql) ($has_redis) ($has_rabbitmq) }}
+{{ if or ($has_mariadb) ($has_redis) ($has_rabbitmq) }}
 
 volumes:
-    {{ if $has_mysql -}}
+    {{ if $has_mariadb -}}
     db-data:
     {{- end }}
     {{ if $has_redis -}}
@@ -25,11 +25,11 @@ volumes:
 
 services:
 
-{{- if $has_mysql -}}
-{{- $mysql := .Vars.system.mysql }}
+{{- if $has_mariadb -}}
+{{- $mariadb := .Vars.system.mariadb }}
 
   database:
-    image: 'mysql:{{ $mysql.version }}'
+    image: 'mariadb:{{ $mariadb.version }}'
     ports: [3306]
     command: --max_allowed_packet=1024M
     environment:
@@ -49,7 +49,7 @@ services:
 
 {{- end }}
 
-{{- if $has_mysql }}
+{{- if $has_mariadb }}
 
   phpmyadmin:
     image: phpmyadmin

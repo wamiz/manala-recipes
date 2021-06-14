@@ -1,6 +1,6 @@
 # Symfony App: Docker Hybrid
 
-A [Manala recipe](https://github.com/manala/manala-recipes) for projects using the Symfony CLI, PHP, Node.js, MySQL and Redis.
+A [Manala recipe](https://github.com/manala/manala-recipes) for projects using the Symfony CLI, PHP, Node.js, MariaDB and Redis.
 
 ---
 
@@ -140,8 +140,8 @@ Here is an example of a system configuration in `.manala.yaml`:
 
 system:
     app_name: your-app
-    mysql:
-        version: 5.7
+    mariadb:
+        version: 10.4
     redis:
         version: '*'
 ```
