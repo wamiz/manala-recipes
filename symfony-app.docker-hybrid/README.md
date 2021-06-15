@@ -347,6 +347,12 @@ brew install php@7.4
 brew install php@8.0 
 ```
 
+And install the following extensions:
+```
+brew install imagemagick
+symfony pecl install {redis,apcu,ampq,imagick}
+```
+
 ### Enable/disable XDebug
 
 XDebug is enabled by default after its installation, but you don't want it to be always enabled for performance issues.
