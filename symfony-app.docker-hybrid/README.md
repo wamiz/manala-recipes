@@ -349,9 +349,15 @@ brew install php@8.0
 
 And install the following extensions:
 ```
-brew install {rabbitmq,imagemagick} 
-symfony pecl install {redis,apcu,amqp,imagick}
+brew install {rabbitmq-c,rabbitmq,imagemagick}
+
+symfony pecl install {redis,apcu,imagick}
+symfony pecl install amqp # ATTENTION il faut renseigner le chemin vers rabbitmq-c, `brew --prefix rabbitmq-c` pour avoir la version
 ```
+
+### Composer
+
+Composer can be installed through [brew](https://formulae.brew.sh/formula/composer) or by [following the official documentation](https://getcomposer.org/doc/00-intro.md).
 
 ### Enable/disable XDebug
 
