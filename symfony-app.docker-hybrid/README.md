@@ -329,10 +329,10 @@ You can also use [phpenv](https://github.com/phpenv/phpenv-installer) or [brew](
 If using deb.sury.org, you can run the following commands:
 ```shell
 # install PHP 7.4
-sudo apt install php7.4 php7.4-{zip,opcache,acpu,xdebug,fpm} php7.4-{pgsql,mysql} php7.4-{json,intl,curl,mbstring,xml,gd}
+sudo apt install php7.4 php7.4-{zip,opcache,apcu,xdebug,fpm} php7.4-{pgsql,mysql} php7.4-{json,intl,curl,mbstring,xml,gd}
 
 # install PHP 8.0
-sudo apt install php8.0 php8.0-{zip,opcache,acpu,xdebug,fpm} php8.0-{pgsql,mysql} php8.0-{intl,curl,mbstring,xml,gd}
+sudo apt install php8.0 php8.0-{zip,opcache,apcu,xdebug,fpm} php8.0-{pgsql,mysql} php8.0-{intl,curl,mbstring,xml,gd}
 ```
 
 #### MacOS
