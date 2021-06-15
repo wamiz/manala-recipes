@@ -350,7 +350,7 @@ brew install php@8.0
 And install the following extensions:
 ```
 brew install imagemagick
-symfony pecl install {redis,apcu,ampq,imagick}
+symfony pecl install {redis,apcu,amqp,imagick}
 ```
 
 ### Enable/disable XDebug
