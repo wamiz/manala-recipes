@@ -36,7 +36,7 @@ echo 14 > .nvmrc # Use Node.js 14
 ```
 
 Those files will be used by:
-- The Symfony CLI when using `symfony php` and `symfony composer` (eg: `symfony console cache:clear, `symfony composer install)
+- The Symfony CLI when using `symfony php` and `symfony composer` (eg: `symfony console cache:clear`, symfony composer install)
 - NVM when using `nvm use`
 - GitHub Actions, thanks to [the action `setup-environment`](#github-actions)
 
