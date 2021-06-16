@@ -12,7 +12,7 @@ A [Manala recipe](https://github.com/manala/manala-recipes) for projects using t
     * [macOS](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
     * [Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
 * [Docker Compose](https://docs.docker.com/compose/install/)
-* [Symfony CLI](https://symfony.com/doc/current/setup/symfony_server.html) (with [local proxy support](https://symfony.com/doc/current/setup/symfony_server.html#setting-up-the-local-proxy))
+* [Symfony CLI](https://symfony.com/doc/current/setup/symfony_server.html) (with [local proxy support](https://symfony.com/doc/current/setup/symfony_server.html#setting-up-the-local-proxy), see [specific steps for Windows and WSL](https://github.com/wamiz/manala-recipes/issues/6))
 * PHP and Node.js must be installed by yourself on your machine, see:
     * [Installing PHP on your machine](#installing-php-on-your-machine)
     * [Installing Node.js on your machine](#installing-nodejs-on-your-machine)
@@ -352,7 +352,7 @@ And install the following extensions:
 brew install {rabbitmq-c,rabbitmq,imagemagick}
 
 symfony pecl install {redis,apcu,imagick}
-symfony pecl install amqp # ATTENTION il faut renseigner le chemin vers rabbitmq-c, `brew --prefix rabbitmq-c` pour avoir la version
+symfony pecl install amqp # WARNING: you need to specify the path to "rabbitmq-c", run `brew --prefix rabbitmq-c` to get it
 ```
 
 ### Composer
