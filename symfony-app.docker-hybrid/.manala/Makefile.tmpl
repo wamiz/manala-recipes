@@ -25,7 +25,8 @@ symfony := symfony
 php := $(symfony) php
 composer := $(symfony) composer
 
-APP_DOMAINS := {{ .Vars.system.app_name }}
+APP_NAME := {{ .Vars.system.app_name }}
+APP_DOMAINS := $(APP_NAME)
 MANDATORY_CONTAINERS := {{- if $has_mariadb }} database{{ end }}
                         {{- if $has_redis }} redis{{ end }}
                         {{- if $has_redis }} mailcatcher{{ end }}
