@@ -7,11 +7,10 @@ A [Manala recipe](https://github.com/manala/manala-recipes) for projects using t
 ## Requirements
 
 * [manala](https://manala.github.io/manala/)
-* Docker Engine: 
-    * [Debian](https://hub.docker.com/editions/community/docker-ce-server-debian)
+* Docker Desktop >= 3.4.0: 
+    * [Debian](https://hub.docker.com/editions/community/docker-ce-server-debian), with [Docker Compose v2 plugin](https://docs.docker.com/compose/cli-command/#install-on-linux)
     * [macOS](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
     * [Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
-* [Docker Compose](https://docs.docker.com/compose/install/)
 * [Symfony CLI](https://symfony.com/doc/current/setup/symfony_server.html) (with [local proxy support](https://symfony.com/doc/current/setup/symfony_server.html#setting-up-the-local-proxy), see [specific steps for Windows and WSL](https://github.com/wamiz/manala-recipes/issues/6))
 * PHP and Node.js must be installed by yourself on your machine, see:
     * [Installing PHP on your machine](#installing-php-on-your-machine)
