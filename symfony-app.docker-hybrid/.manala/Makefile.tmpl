@@ -20,12 +20,13 @@ include $(_ROOT_DIR)/.manala/make/git.mk
 user := $(shell id -u)
 group := $(shell id -g)
 
-dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose
+dc := USER_ID=$(user) GROUP_ID=$(group) $(shell docker compose > /dev/null 2>&1 && echo 'docker compose' || echo 'docker-compose')
 symfony := symfony
 php := $(symfony) php
 composer := $(symfony) composer
 
-APP_DOMAINS := {{ .Vars.system.app_name }}
+APP_NAME := {{ .Vars.system.app_name }}
+APP_DOMAINS := $(APP_NAME)
 MANDATORY_CONTAINERS := {{- if $has_mariadb }} database{{ end }}
                         {{- if $has_redis }} redis{{ end }}
                         {{- if $has_redis }} mailcatcher{{ end }}
