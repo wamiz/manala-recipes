@@ -7,7 +7,7 @@ A [Manala recipe](https://github.com/manala/manala-recipes) for projects using t
 ## Requirements
 
 * [manala](https://manala.github.io/manala/)
-* Docker Desktop >= 3.4.0: 
+* Docker Desktop >= 3.4.0:
     * [Debian](https://hub.docker.com/editions/community/docker-ce-server-debian), with [Docker Compose v2 plugin](https://docs.docker.com/compose/cli-command/#install-on-linux)
     * [macOS](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
     * [Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
@@ -25,7 +25,7 @@ $ manala init -i symfony-app.docker-hybrid --repository https://github.com/Wamiz
 
 ## Configure PHP and Node.js versions
 
-Since this recipe relies on having PHP and Node.js by yourself, it's important to create two files `.php-version` and `.nvmrc` 
+Since this recipe relies on having PHP and Node.js by yourself, it's important to create two files `.php-version` and `.nvmrc`
 which will contains the PHP and Node.js versions to use for your project.
 
 ```shell
@@ -39,7 +39,7 @@ Those files will be used by:
 - NVM when using `nvm use`
 - GitHub Actions, thanks to [the action `setup-environment`](#github-actions)
 
-**It is important to use `symfony php` and not `php` directly, thanks to [Symfony CLI's Docker integration](https://symfony.com/doc/current/setup/symfony_server.html#docker-integration) 
+**It is important to use `symfony php` and not `php` directly, thanks to [Symfony CLI's Docker integration](https://symfony.com/doc/current/setup/symfony_server.html#docker-integration)
 it automatically exposes environment variables from Docker (eg: `DATABASE_URL`, `REDIS_URL`, ...) to PHP.**
 
 ## Quick start
@@ -81,24 +81,24 @@ manala up
 From now on, if you execute the `make help` command in your console, you should obtain the following output:
 
 ```shell
-Usage: make [target] 	
+Usage: make [target]
 
-Help:   
-  help This help 	
+Help:
+  help This help
 
-Environment:   
-  install              Install the environment   
-  install@integration  Install the environment (integration)   
-  up                   Update and start the environment   
-  start                Start the environment   
-  stop                 Stop the environment   
-  down                 Stop and remove the environment 	
+Environment:
+  install              Install the environment
+  install@integration  Install the environment (integration)
+  up                   Update and start the environment
+  start                Start the environment
+  stop                 Stop the environment
+  down                 Stop and remove the environment
 
-Development tools:   
-  run-phpmyadmin     Start a web interface for PhpMyAdmin   
-  run-phpredisadmin  Start a web interface for PhpRedisAdmin   
-  open-mailcatcher   Open the web interface for MailCatcher   
-  open-rabbitmq      Open the web interface for RabbitMQ 	
+Development tools:
+  run-phpmyadmin     Start a web interface for PhpMyAdmin
+  run-phpredisadmin  Start a web interface for PhpRedisAdmin
+  open-mailcatcher   Open the web interface for MailCatcher
+  open-rabbitmq      Open the web interface for RabbitMQ
 
 Project:
 ```
@@ -151,7 +151,7 @@ system:
 
 ### GitHub Actions
 
-Since this recipe generates a `docker-compose.yaml` file, it can be used to provide a 
+Since this recipe generates a `docker-compose.yaml` file, it can be used to provide a
 fully-fledged environnement according to your project needs on GitHub Actions.
 
 ```yaml
@@ -169,7 +169,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            
+
             # The code of this local action can be found below
             - uses: ./.github/actions/setup-environment
 
@@ -320,9 +320,9 @@ reload-db@test:
 
 ### Installing PHP on your machine
 
-#### Debian/Ubuntu 
+#### Debian/Ubuntu
 
-On Debian or Ubuntu, it's recommended to use [deb.sury.org](https://deb.sury.org/#php-packages) to install multiple PHP versions. 
+On Debian or Ubuntu, it's recommended to use [deb.sury.org](https://deb.sury.org/#php-packages) to install multiple PHP versions.
 You can also use [phpenv](https://github.com/phpenv/phpenv-installer) or [brew](https://formulae.brew.sh/formula/php).
 
 If using deb.sury.org, you can run the following commands:
@@ -343,7 +343,7 @@ You can use [brew](https://formulae.brew.sh/formula/php) to instal multiple PHP 
 brew install php@7.4
 
 # install PHP 8.0
-brew install php@8.0 
+brew install php@8.0
 ```
 
 And install the following extensions:
@@ -353,6 +353,13 @@ brew install {rabbitmq-c,rabbitmq,imagemagick}
 symfony pecl install {redis,apcu,imagick}
 symfony pecl install amqp # WARNING: you need to specify the path to "rabbitmq-c", run `brew --prefix rabbitmq-c` to get it
 ```
+
+You may get an error regarding `pcre2.h`. To solve this issue, you have to create a symbolic link.
+```
+ln -s /opt/homebrew/Cellar/pcre2/$(brew list --versions pcre2 | cut -d ' ' -f2)/include/pcre2.h /opt/homebrew/Cellar/php@8.0/$(brew list --versions php@8.0 | cut -d ' ' -f2)/include/php/ext/pcre/pcre2.h
+```
+
+If pcre2 is missing, run `brew install pcre2`.
 
 ### Composer
 
@@ -388,7 +395,7 @@ NVM_AUTOLOAD=1
 
 plugins=(... nvm)
 
-# The following commands are not required anymore, since the Oh My Zsh nvm plugin already loads nvm. 
+# The following commands are not required anymore, since the Oh My Zsh nvm plugin already loads nvm.
 #export NVM_DIR="$HOME/.nvm"
 #[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
