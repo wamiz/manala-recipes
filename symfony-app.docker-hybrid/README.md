@@ -348,6 +348,7 @@ brew install php@8.0
 
 And install the following extensions:
 ```
+brew install pkg-config
 brew install {rabbitmq-c,rabbitmq,imagemagick}
 
 symfony pecl install {redis,apcu,imagick}
