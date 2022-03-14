@@ -7,9 +7,8 @@ version: '3.6'
 {{- $has_mariadb := .Vars.system.mariadb.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
 {{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
-{{- $has_rabbitmq := .Vars.system.rabbitmq.version -}}
 
-{{ if or ($has_mariadb) ($has_redis) ($has_rabbitmq) }}
+{{ if or ($has_mariadb) ($has_redis) }}
 
 volumes:
     {{ if $has_mariadb -}}
@@ -17,9 +16,6 @@ volumes:
     {{- end }}
     {{ if $has_redis -}}
     redis-data:
-    {{- end }}
-    {{ if $has_rabbitmq -}}
-    rabbitmq-data:
     {{- end }}
 {{- end }}
 
@@ -89,14 +85,3 @@ services:
 
 {{- end }}
 
-
-{{- if $has_rabbitmq }}
-
-  rabbitmq:
-    image: 'rabbitmq:management-alpine'
-    ports: [5672, 15672]
-    environment:
-      TZ: {{ .Vars.system.timezone }}
-    volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
-{{- end }}

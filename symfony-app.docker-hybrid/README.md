@@ -98,7 +98,6 @@ Development tools:
   run-phpmyadmin     Start a web interface for PhpMyAdmin
   run-phpredisadmin  Start a web interface for PhpRedisAdmin
   open-mailcatcher   Open the web interface for MailCatcher
-  open-rabbitmq      Open the web interface for RabbitMQ
 
 Project:
 ```
@@ -316,7 +315,6 @@ reload-db@test:
 - run `make run-phpmyadmin` to start a local [PhpMyAdmin](https://github.com/phpmyadmin/phpmyadmin) instance
 - run `make run-phpredisadmin` to start a local [PhpRedisAdmin](https://github.com/erikdubbelboer/phpRedisAdmin) instance.
 - run `make open-mailcatcher` to open a local [MailCatcher Web UI](https://mailcatcher.me).
-- run `make open-rabbitmq` to open a local [RabbitMQ Management Web UI](https://www.rabbitmq.com/management.html).
 
 ### Installing PHP on your machine
 
@@ -349,10 +347,9 @@ brew install php@8.0
 And install the following extensions:
 ```
 brew install pkg-config
-brew install {rabbitmq-c,rabbitmq,imagemagick}
+brew install imagemagick
 
 symfony pecl install {redis,apcu,imagick}
-symfony pecl install amqp # WARNING: you need to specify the path to "rabbitmq-c", run `brew --prefix rabbitmq-c` to get it
 ```
 
 You may get an error regarding `pcre2.h`. To solve this issue, you have to create a symbolic link.

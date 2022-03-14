@@ -1,7 +1,6 @@
 {{- $has_mariadb := .Vars.system.mariadb.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
 {{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
-{{- $has_rabbitmq := .Vars.system.rabbitmq.version -}}
 
 # Relative root dir ("."|".."|"../.."|…)
 _ROOT_DIR := $(patsubst ./%,%,$(patsubst %/.manala/Makefile,%,./$(filter %.manala/Makefile,$(MAKEFILE_LIST))))
@@ -30,7 +29,6 @@ APP_DOMAINS := $(APP_NAME)
 MANDATORY_CONTAINERS := {{- if $has_mariadb }} database{{ end }}
                         {{- if $has_redis }} redis{{ end }}
                         {{- if $has_redis }} mailcatcher{{ end }}
-                        {{- if $has_rabbitmq }} rabbitmq{{ end }}
 
 HELP += $(call help_section, Environment)
 
@@ -120,13 +118,6 @@ run-phpredisadmin:
 HELP += $(call help,open-mailcatcher,  Open the web interface for MailCatcher)
 open-mailcatcher:
 	$(symfony) open:local:webmail
-{{- end }}
-
-{{ if $has_rabbitmq -}}
-HELP += $(call help,open-rabbitmq,     Open the web interface for RabbitMQ)
-open-rabbitmq:
-	$(symfony) open:local:rabbitmq
-	@$(call message_success, Use \"guest\" as username and \"guest\" as password.)
 {{- end }}
 
 HELP += $(call help_section, Project)

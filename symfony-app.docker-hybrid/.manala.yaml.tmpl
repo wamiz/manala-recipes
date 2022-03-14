@@ -48,9 +48,4 @@ system:
         version: {{ .mailcatcher.version | toYaml }}
     {{- end }}
 
-    {{- if .rabbitmq.version }}
-    rabbitmq:
-        version: {{ .rabbitmq.version | toYaml }}
-    {{- end }}
-
 {{- end }}
