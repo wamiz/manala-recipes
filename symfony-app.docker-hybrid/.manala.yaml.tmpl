@@ -48,9 +48,4 @@ system:
         version: {{ .mailcatcher.version | toYaml }}
     {{- end }}
 
-    {{- if .dynamodb.version }}
-    dynamodb:
-        version: {{ .dynamodb.version | toYaml }}
-    {{- end }}
-
 {{- end }}
