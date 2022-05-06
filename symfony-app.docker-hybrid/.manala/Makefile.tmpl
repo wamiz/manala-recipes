@@ -1,7 +1,6 @@
 {{- $has_mariadb := .Vars.system.mariadb.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
 {{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
-{{- $has_dynamodb := .Vars.system.dynamodb.version -}}
 
 # Relative root dir ("."|".."|"../.."|…)
 _ROOT_DIR := $(patsubst ./%,%,$(patsubst %/.manala/Makefile,%,./$(filter %.manala/Makefile,$(MAKEFILE_LIST))))
@@ -29,8 +28,7 @@ APP_NAME := {{ .Vars.system.app_name }}
 APP_DOMAINS := $(APP_NAME)
 MANDATORY_CONTAINERS := {{- if $has_mariadb }} database{{ end }}
                         {{- if $has_redis }} redis{{ end }}
-                        {{- if $has_mailcatcher }} mailcatcher{{ end }}
-                        {{- if $has_dynamodb }} dynamodb{{ end }}
+                        {{- if $has_redis }} mailcatcher{{ end }}
 
 HELP += $(call help_section, Environment)
 

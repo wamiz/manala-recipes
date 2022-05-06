@@ -36,7 +36,3 @@ system:
         # @option {"label": "Mailcatcher version"}
         # @schema {"enum": [null, "*"]}
         version: ~
-    dynamodb:
-        # @option {"label": "Dynamodb version"}
-        # @schema {"enum": [null, "*"]}
-        version: ~
