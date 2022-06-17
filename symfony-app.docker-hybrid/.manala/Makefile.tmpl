@@ -45,7 +45,6 @@ install:
 	@echo
 
 HELP += $(call help,install@integration, Install the environment (integration))
-install@integration: export APP_ENV=test
 install@integration:
 	$(symfony) server:ca:install
 	$(MAKE) up
