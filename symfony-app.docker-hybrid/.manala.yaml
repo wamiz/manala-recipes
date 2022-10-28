@@ -28,11 +28,28 @@ system:
         version: ~
         # @schema {"type": ["string", "null"]}
         init: ~
+        # @option {"label": "MariaDB ports"}
+        # @schema {"type": ["array"]}
+        ports: ~
     redis:
         # @option {"label": "Redis version"}
         # @schema {"enum": [null, "*"]}
         version: ~
+        # @option {"label": "Redis ports"}
+        # @schema {"type": ["array"]}
+        ports: ~
     mailcatcher:
         # @option {"label": "Mailcatcher version"}
         # @schema {"enum": [null, "*"]}
         version: ~
+        # @option {"label": "Mailcatcher ports"}
+        # @schema {"type": ["string"]}
+        ports: ~
+    phpmyadmin:
+        # @option {"label": "PhpMyAdmin ports"}
+        # @schema {"type": ["array"]}
+        ports: ~
+    phpredisadmin:
+        # @option {"label": "PhpRedisAdmin ports"}
+        # @schema {"type": ["array"]}
+        ports: ~

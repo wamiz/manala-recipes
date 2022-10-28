@@ -36,16 +36,29 @@ system:
         init: |
             CREATE DATABASE IF NOT EXISTS `app_test`;
             GRANT ALL ON `app_test`.* TO 'app'@'%';
+        ports: {{ .mariadb.ports | toYaml }}
     {{- end }}
 
     {{- if .redis.version }}
     redis:
         version: {{ .redis.version | toYaml }}
+        ports: {{ .redis.ports | toYaml }}
     {{- end }}
 
     {{- if .mailcatcher.version }}
     mailcatcher:
         version: {{ .mailcatcher.version | toYaml }}
+        ports: {{ .mailcatcher.ports | toYaml }}
+    {{- end }}
+
+    {{- if .phpmyadmin.version }}
+    phpmyadmin:
+        ports: {{ .phpmyadmin.ports | toYaml }}
+    {{- end }}
+
+    {{- if .phpredisadmin.version }}
+    phpredisadmin:
+        ports: {{ .phpredisadmin.ports | toYaml }}
     {{- end }}
 
 {{- end }}
