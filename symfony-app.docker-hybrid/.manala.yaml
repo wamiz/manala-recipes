@@ -30,26 +30,26 @@ system:
         init: ~
         # @option {"label": "MariaDB ports"}
         # @schema {"type": ["array"]}
-        ports: ~
+        ports: ['"3306:3306"']
     redis:
         # @option {"label": "Redis version"}
         # @schema {"enum": [null, "*"]}
         version: ~
         # @option {"label": "Redis ports"}
         # @schema {"type": ["array"]}
-        ports: ~
+        ports: ['"6379:6379"']
     mailcatcher:
         # @option {"label": "Mailcatcher version"}
         # @schema {"enum": [null, "*"]}
         version: ~
         # @option {"label": "Mailcatcher ports"}
         # @schema {"type": ["array"]}
-        ports: ~
+        ports: ['"1025", "1080:1080"']
     phpmyadmin:
         # @option {"label": "PhpMyAdmin ports"}
         # @schema {"type": ["array"]}
-        ports: ~
+        ports: ['"80:80"']
     phpredisadmin:
         # @option {"label": "PhpRedisAdmin ports"}
         # @schema {"type": ["array"]}
-        ports: ~
+        ports: ['"81:80"']
