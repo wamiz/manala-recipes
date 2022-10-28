@@ -43,7 +43,7 @@ system:
         # @schema {"enum": [null, "*"]}
         version: ~
         # @option {"label": "Mailcatcher ports"}
-        # @schema {"type": ["string"]}
+        # @schema {"type": ["array"]}
         ports: ~
     phpmyadmin:
         # @option {"label": "PhpMyAdmin ports"}
