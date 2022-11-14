@@ -28,8 +28,8 @@ APP_NAME := {{ .Vars.system.app_name }}
 APP_DOMAINS := $(APP_NAME)
 MANDATORY_CONTAINERS := {{- if $has_mariadb }} database{{ end }}
                         {{- if $has_redis }} redis{{ end }}
-                        {{- if $has_redis }} mailcatcher{{ end }}
-WAIT_FOR_DATABASE_CONTAINER = {{ if $has_mariadb }}true{{ end }}
+                        {{- if $has_mailcatcher }} mailcatcher{{ end }}
+USE_DOCKER = {{ if or ($has_mariadb) ($has_redis) ($has_mailcatcher) }}true{{ else }}false{{ end }}
 
 HELP += $(call help_section, Environment)
 
@@ -58,14 +58,22 @@ _symfony_proxy_start:
 	$(symfony) proxy:start
 
 _up:
-	$(dc) up --detach $(MANDATORY_CONTAINERS)
+	@if [ "$(USE_DOCKER)" = "true" ]; then \
+		$(dc) up --detach $(MANDATORY_CONTAINERS); \
+	else \
+		$(call message_warning, Skipping creating and starting Docker containers...); \
+	fi
 
 _start:
-	$(dc) start $(MANDATORY_CONTAINERS)
+	@if [ "$(USE_DOCKER)" = "true" ]; then \
+		$(dc) start $(MANDATORY_CONTAINERS); \
+	else \
+		$(call message_warning, Skipping starting Docker services...); \
+	fi
 
 _wait_for_database:
 {{- if $has_mariadb }}
-	@if [ "$(WAIT_FOR_DATABASE_CONTAINER)" = "true" ]; then \
+	@if [ "$(USE_DOCKER)" = "true" ]; then \
 		$(call message_warning, Waiting for the database to be ready...); \
 		until docker inspect -f {{ "{{.State.Health.Status}}" }} `$(dc) ps -q database` | grep -q "healthy"; do \
 			$(call message_warning, Waiting...); \
@@ -73,7 +81,7 @@ _wait_for_database:
 		done; \
 		$(call message_success, The database is ready!); \
 	else \
-		$(call message_warning, Skipping waiting for database container...); \
+		$(call message_warning, Skipping waiting for database Docker container...); \
 	fi
 {{- end }}
 
@@ -90,20 +98,33 @@ start: _symfony_proxy_start _start _wait_for_database _post_start_success
 
 HELP += $(call help,stop,                Stop the environment)
 stop:
-	$(dc) stop
+	@if [ "$(USE_DOCKER)" = "true" ]; then \
+		$(dc) stop; \
+	else \
+		$(call message_warning, Skipping stopping Docker services...); \
+	fi
 
 HELP += $(call help,down,                Stop and remove the environment)
 down: stop
-	$(dc) down --volumes
-	@echo
-	@$(call message_error, ALL CONTAINERS HAVE BEEN DESTROYED)
-	@echo
+	@if [ "$(USE_DOCKER)" = "true" ]; then \
+		$(dc) down --volumes; \
+		echo ''; \
+		$(call message_error, ALL CONTAINERS HAVE BEEN DESTROYED); \
+		echo ''; \
+	else \
+	    $(call message_warning, Skipping stopping and removing Docker services...); \
+	fi
 
 HELP += $(call help_section, Development tools)
 
 {{ if $has_mariadb -}}
 HELP += $(call help,run-phpmyadmin,    Start a web interface for PhpMyAdmin)
 run-phpmyadmin:
+	@if [ "$(USE_DOCKER)" = "false" ]; then \
+		$(call message_error, This command does not works if Docker support is disabled (through USE_DOCKER variable)); \
+		exit 1; \
+	fi
+
 	$(dc) up --detach phpmyadmin
 	@echo
 	@$(call message_success, You can now open http://`$(dc) port phpmyadmin 80` to access PhpMyAdmin)
@@ -113,6 +134,11 @@ run-phpmyadmin:
 {{ if $has_redis -}}
 HELP += $(call help,run-phpredisadmin, Start a web interface for PhpRedisAdmin)
 run-phpredisadmin:
+	@if [ "$(USE_DOCKER)" = "false" ]; then \
+		$(call message_error, This command does not works if Docker support is disabled (through USE_DOCKER variable)); \
+		exit 1; \
+	fi
+
 	$(dc) up --detach phpredisadmin
 	@echo
 	@$(call message_success, You can now open http://`$(dc) port phpredisadmin 80` to access PhpRedisAdmin)
