@@ -29,6 +29,7 @@ APP_DOMAINS := $(APP_NAME)
 MANDATORY_CONTAINERS := {{- if $has_mariadb }} database{{ end }}
                         {{- if $has_redis }} redis{{ end }}
                         {{- if $has_redis }} mailcatcher{{ end }}
+WAIT_FOR_DATABASE_CONTAINER = {{ if $has_mariadb }}true{{ end }}
 
 HELP += $(call help_section, Environment)
 
@@ -63,14 +64,18 @@ _start:
 	$(dc) start $(MANDATORY_CONTAINERS)
 
 _wait_for_database:
-	{{ if $has_mariadb -}}
-	@$(call message_warning, Waiting for the database to be ready...)
-	@until docker inspect -f {{ "{{.State.Health.Status}}" }} `$(dc) ps -q database` | grep -q "healthy"; do \
-	  $(call message_warning, Waiting...); \
-	  sleep 1; \
-	done
-	@$(call message_success, The database is ready!)
-	{{- end }}
+{{- if $has_mariadb }}
+	@if [ "$(WAIT_FOR_DATABASE_CONTAINER)" = "true" ]; then \
+		$(call message_warning, Waiting for the database to be ready...); \
+		until docker inspect -f {{ "{{.State.Health.Status}}" }} `$(dc) ps -q database` | grep -q "healthy"; do \
+			$(call message_warning, Waiting...); \
+			sleep 1; \
+		done; \
+		$(call message_success, The database is ready!); \
+	else \
+		$(call message_warning, Skipping waiting for database container...); \
+	fi
+{{- end }}
 
 _post_start_success:
 	@echo
