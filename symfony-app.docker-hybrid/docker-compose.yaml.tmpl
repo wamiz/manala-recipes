@@ -37,6 +37,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
       - .manala/init-db:/docker-entrypoint-initdb.d
+      - .manala/config-db/99-additional-config.cnf:/etc/mysql/mariadb.conf.d/99-additional-config.cnf
     healthcheck:
       test: mysqladmin ping --silent
       interval: 10s

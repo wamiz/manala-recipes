@@ -28,6 +28,8 @@ system:
         version: ~
         # @schema {"type": ["string", "null"]}
         init: ~
+        # @schema {"type": ["string", "null"]}
+        additional_config:
     redis:
         # @option {"label": "Redis version"}
         # @schema {"enum": [null, "*"]}

@@ -54,7 +54,7 @@ $ manala init -i symfony-app.docker-hybrid --repository https://github.com/Wamiz
 Edit the `Makefile` at the root directory of your project and add the following lines at the beginning of the file:
 
 ```makefile
--include .manala/Makefile
+include .manala/Makefile
 
 # This function will be called at the end of "make install"
 define install
