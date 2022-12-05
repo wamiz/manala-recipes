@@ -45,7 +45,7 @@ install:
 	@$(call message_success, The environment has been successfully installed.)
 	@echo
 
-HELP += $(call help,install@integration, Install the environment (integration))
+HELP += $(call help,install@integration, Install the environment (in integration environment))
 install@integration:
 	$(symfony) server:ca:install
 	$(MAKE) up
@@ -149,5 +149,3 @@ HELP += $(call help,open-mailcatcher,  Open the web interface for MailCatcher)
 open-mailcatcher:
 	$(symfony) open:local:webmail
 {{- end }}
-
-HELP += $(call help_section, Project)
