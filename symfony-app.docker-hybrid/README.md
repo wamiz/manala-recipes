@@ -30,7 +30,7 @@ which will contains the PHP and Node.js versions to use for your project.
 
 ```shell
 cd /path/to/my/app
-echo 8.1 > .php-version # Use PHP 8.0
+echo 8.2 > .php-version # Use PHP 8.2
 echo 16 > .nvmrc # Use Node.js 16
 ```
 
@@ -202,7 +202,7 @@ jobs:
             - run: make setup@integration
 
             # Check versions
-            - run: symfony php -v # PHP 8.1.x
+            - run: symfony php -v # PHP 8.2.x
             - run: node -v # Node.js 16.x
 
             # Run some tests... remember to use "symfony php" and not "php"
@@ -325,8 +325,8 @@ You can also use [phpenv](https://github.com/phpenv/phpenv-installer) or [brew](
 
 If using deb.sury.org, you can run the following commands:
 ```shell
-# install PHP 8.1
-sudo apt install php8.1 php8.1-{zip,opcache,apcu,xdebug,fpm} php8.1-{pgsql,mysql} php8.1-{intl,curl,mbstring,xml,gd,imagick,redis}
+# install PHP 8.2
+sudo apt install php8.2 php8.2-{zip,opcache,apcu,xdebug,fpm} php8.2-{pgsql,mysql} php8.2-{intl,curl,mbstring,xml,gd,imagick,redis}
 ```
 
 #### MacOS
@@ -334,8 +334,8 @@ sudo apt install php8.1 php8.1-{zip,opcache,apcu,xdebug,fpm} php8.1-{pgsql,mysql
 You can use [brew](https://formulae.brew.sh/formula/php) to install multiple PHP versions.
 
 ```shell
-# install PHP 8.1
-brew install php@8.1
+# install PHP 8.2
+brew install php@8.2
 ```
 
 And install the following extensions:
@@ -348,13 +348,13 @@ symfony pecl install {redis,apcu,imagick}
 > **Warning**
 > You may get an error regarding `pcre2.h`. To solve this issue, you have to create a symbolic link: 
 > ```shell
-> ln -s /opt/homebrew/Cellar/pcre2/$(brew list --versions pcre2 | cut -d ' ' -f2)/include/pcre2.h /opt/homebrew/Cellar/php@8.1/$(brew list --versions php@8.1 | cut - d ' ' -f2)/include/php/ext/pcre/pcre2.h
+> ln -s /opt/homebrew/Cellar/pcre2/$(brew list --versions pcre2 | cut -d ' ' -f2)/include/pcre2.h /opt/homebrew/Cellar/php@8.2/$(brew list --versions php@8.2 | cut - d ' ' -f2)/include/php/ext/pcre/pcre2.h
 > ```
 
 Finally, you can add PHP binaries to your path by adding the following line in your `.zshrc` or `.bashrc`: 
 ```shell
-export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
-export PATH="/opt/homebrew/opt/php@8.1/sbin:$PATH"
+export PATH="/opt/homebrew/opt/php@8.2/bin:$PATH"
+export PATH="/opt/homebrew/opt/php@8.2/sbin:$PATH"
 ```
 
 ### Composer
