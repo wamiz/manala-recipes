@@ -351,7 +351,7 @@ symfony pecl install {redis,apcu,imagick}
 > ln -s /opt/homebrew/Cellar/pcre2/$(brew list --versions pcre2 | cut -d ' ' -f2)/include/pcre2.h /opt/homebrew/Cellar/php@8.1/$(brew list --versions php@8.1 | cut - d ' ' -f2)/include/php/ext/pcre/pcre2.h
 > ```
 
-Finally, you can add PHP binaries to your path by adding the folliwing line in your `.zshrc` or `.bashrc`: 
+Finally, you can add PHP binaries to your path by adding the following line in your `.zshrc` or `.bashrc`: 
 ```shell
 export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
 export PATH="/opt/homebrew/opt/php@8.1/sbin:$PATH"
