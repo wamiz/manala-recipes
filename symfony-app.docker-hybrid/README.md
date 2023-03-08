@@ -30,8 +30,8 @@ which will contains the PHP and Node.js versions to use for your project.
 
 ```shell
 cd /path/to/my/app
-echo 8.0 > .php-version # Use PHP 8.0
-echo 14 > .nvmrc # Use Node.js 14
+echo 8.1 > .php-version # Use PHP 8.0
+echo 16 > .nvmrc # Use Node.js 16
 ```
 
 Those files will be used by:
@@ -202,8 +202,8 @@ jobs:
             - run: make setup@integration
 
             # Check versions
-            - run: symfony php -v # PHP 8.0.3
-            - run: node -v # Node.js 14.16.0
+            - run: symfony php -v # PHP 8.1.x
+            - run: node -v # Node.js 16.x
 
             # Run some tests... remember to use "symfony php" and not "php"
             - run: symfony console cache:clear
@@ -325,39 +325,37 @@ You can also use [phpenv](https://github.com/phpenv/phpenv-installer) or [brew](
 
 If using deb.sury.org, you can run the following commands:
 ```shell
-# install PHP 7.4
-sudo apt install php7.4 php7.4-{zip,opcache,apcu,xdebug,fpm} php7.4-{pgsql,mysql} php7.4-{json,intl,curl,mbstring,xml,gd,imagick,redis}
-
-# install PHP 8.0
-sudo apt install php8.0 php8.0-{zip,opcache,apcu,xdebug,fpm} php8.0-{pgsql,mysql} php8.0-{intl,curl,mbstring,xml,gd,imagick,redis}
+# install PHP 8.1
+sudo apt install php8.1 php8.1-{zip,opcache,apcu,xdebug,fpm} php8.1-{pgsql,mysql} php8.1-{intl,curl,mbstring,xml,gd,imagick,redis}
 ```
 
 #### MacOS
 
-You can use [brew](https://formulae.brew.sh/formula/php) to instal multiple PHP versions.
+You can use [brew](https://formulae.brew.sh/formula/php) to install multiple PHP versions.
 
-```
-# install PHP 7.4
-brew install php@7.4
-
-# install PHP 8.0
-brew install php@8.0
+```shell
+# install PHP 8.1
+brew install php@8.1
 ```
 
 And install the following extensions:
-```
-brew install pkg-config
-brew install imagemagick
+```shell
+brew install pkg-config imagemagick pcre2
 
 symfony pecl install {redis,apcu,imagick}
 ```
 
-You may get an error regarding `pcre2.h`. To solve this issue, you have to create a symbolic link.
-```
-ln -s /opt/homebrew/Cellar/pcre2/$(brew list --versions pcre2 | cut -d ' ' -f2)/include/pcre2.h /opt/homebrew/Cellar/php@8.0/$(brew list --versions php@8.0 | cut -d ' ' -f2)/include/php/ext/pcre/pcre2.h
-```
+> **Warning**
+> You may get an error regarding `pcre2.h`. To solve this issue, you have to create a symbolic link: 
+> ```shell
+> ln -s /opt/homebrew/Cellar/pcre2/$(brew list --versions pcre2 | cut -d ' ' -f2)/include/pcre2.h /opt/homebrew/Cellar/php@8.1/$(brew list --versions php@8.1 | cut - d ' ' -f2)/include/php/ext/pcre/pcre2.h
+> ```
 
-If pcre2 is missing, run `brew install pcre2`.
+Finally, you can add PHP binaries to your path by adding the following line in your `.zshrc` or `.bashrc`: 
+```shell
+export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
+export PATH="/opt/homebrew/opt/php@8.1/sbin:$PATH"
+```
 
 ### Composer
 
