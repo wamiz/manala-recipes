@@ -351,6 +351,18 @@ symfony pecl install {redis,apcu,imagick}
 > ln -s /opt/homebrew/Cellar/pcre2/$(brew list --versions pcre2 | cut -d ' ' -f2)/include/pcre2.h /opt/homebrew/Cellar/php/$(brew list --versions php@8.2 | cut -d ' ' -f2)/include/php/ext/pcre/pcre2.h
 > ```
 
+> If you have this error on `symfony pecl install {redis,apcu,imagick}` :
+> ```shell
+> Ignoring installed package pecl/redis
+> Ignoring installed package pecl/apcu
+> Ignoring installed package pecl/imagick
+> Nothing to install
+> ```
+> But the make app.update tells you that you don't have that in your configuration, replace install with upgrade : 
+> ```shell 
+> symfony pecl upgrade {redis,apcu,imagick}
+> ```
+
 Finally, you can add PHP binaries to your path by adding the following line in your `.zshrc` or `.bashrc`: 
 ```shell
 export PATH="/opt/homebrew/opt/php@8.2/bin:$PATH"
