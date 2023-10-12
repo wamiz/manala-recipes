@@ -7,8 +7,9 @@ version: '3.6'
 {{- $has_mariadb := .Vars.system.mariadb.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
 {{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
+{{- $has_meilisearch := .Vars.system.meilisearch.version -}}
 
-{{ if or ($has_mariadb) ($has_redis) }}
+{{ if or ($has_mariadb) ($has_redis) ($has_meilisearch) }}
 
 volumes:
     {{ if $has_mariadb -}}
@@ -16,6 +17,9 @@ volumes:
     {{- end }}
     {{ if $has_redis -}}
     redis-data:
+    {{- end }}
+    {{ if $has_meilisearch -}}
+    meilisearch-data:
     {{- end }}
 {{- end }}
 
@@ -86,3 +90,21 @@ services:
 
 {{- end }}
 
+{{- if $has_meilisearch }}
+
+  meilisearch:
+    image: 'getmeili/meilisearch:latest'
+    ports: [7700]
+    environment:
+      TZ: {{ .Vars.system.timezone }}
+    volumes:
+      - meilisearch-data:/meili_data
+    healthcheck:
+      test: curl --silent --fail http://localhost:7700/health
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    labels:
+      com.symfony.server.service-prefix: 'MEILISEARCH'
+
+{{- end }}
