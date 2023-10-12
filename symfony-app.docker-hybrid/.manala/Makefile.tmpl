@@ -1,6 +1,7 @@
 {{- $has_mariadb := .Vars.system.mariadb.version -}}
 {{- $has_redis := .Vars.system.redis.version -}}
 {{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
+{{- $has_meilisearch := .Vars.system.meilisearch.version -}}
 
 # Relative root dir ("."|".."|"../.."|…)
 _ROOT_DIR := $(patsubst ./%,%,$(patsubst %/.manala/Makefile,%,./$(filter %.manala/Makefile,$(MAKEFILE_LIST))))
@@ -29,7 +30,8 @@ APP_DOMAINS := $(APP_NAME)
 MANDATORY_CONTAINERS := {{- if $has_mariadb }} database{{ end }}
                         {{- if $has_redis }} redis{{ end }}
                         {{- if $has_mailcatcher }} mailcatcher{{ end }}
-USE_DOCKER = {{ if or ($has_mariadb) ($has_redis) ($has_mailcatcher) }}true{{ else }}false{{ end }}
+                        {{- if $has_meilisearch }} meilisearch{{ end }}
+USE_DOCKER = {{ if or ($has_mariadb) ($has_redis) ($has_mailcatcher) ($has_meilisearch) }}true{{ else }}false{{ end }}
 
 HELP += $(call help_section, Environment)
 
