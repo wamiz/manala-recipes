@@ -71,4 +71,9 @@ system:
         version: {{ .mailcatcher.version | toYaml }}
     {{- end }}
 
+    {{- if .meilisearch.version }}
+    meilisearch:
+        version: {{ .meilisearch.version | toYaml }}
+    {{- end }}
+
 {{- end }}

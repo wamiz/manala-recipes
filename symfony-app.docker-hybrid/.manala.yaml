@@ -47,3 +47,7 @@ system:
         # @option {"label": "Mailcatcher version"}
         # @schema {"enum": [null, "*"]}
         version: ~
+    meilisearch:
+        # @option {"label": "Meilisearch version"}
+        # @schema {"enum": [null, "*"]}
+        version: ~
