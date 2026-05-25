@@ -105,7 +105,7 @@ plugins=(... nvm)
 
 ```
 $ cd /path/to/my/app
-$ manala init -i symfony-app.docker-hybrid --repository https://github.com/Kocal/manala-recipes.git
+$ manala init -i symfony-app.docker-hybrid --repository https://github.com/wamiz/manala-recipes.git
 ```
 
 ### 1. Configure PHP and Node.js versions
