@@ -4,6 +4,7 @@ manala:
     sync:
         - .manala/
         - docker-compose.yaml.tmpl
+        - docker-compose.override.yaml.tmpl
         - php.ini.tmpl
 
 system:
@@ -22,9 +23,17 @@ system:
         #     }
         # }
         configs: []
+    mysql:
+        # @option {"label": "MySQL version"}
+        # @schema {"type": ["string", "null"], "pattern": "^[0-9]+([.][0-9]+){0,2}$"}
+        version: ~
+        # @schema {"type": ["string", "null"]}
+        init: ~
+        # @schema {"type": ["string", "null"]}
+        additional_config:
     mariadb:
         # @option {"label": "MariaDB version"}
-        # @schema {"enum": [null, 10.3, 10.4, 10.5, 10.6]}
+        # @schema {"enum": [null, 10.11, 10.6, 10.5, 10.4, 10.3, 10.2, 10.1]}
         version: ~
         # @schema {"type": ["string", "null"]}
         init: ~

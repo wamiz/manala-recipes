@@ -1,3 +1,5 @@
-{{- if .Vars.system.mariadb.additional_config -}}
+{{- if .Vars.system.mysql.additional_config -}}
+{{- .Vars.system.mysql.additional_config -}}
+{{- else if .Vars.system.mariadb.additional_config -}}
 {{- .Vars.system.mariadb.additional_config -}}
 {{- end -}}

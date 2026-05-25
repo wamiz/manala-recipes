@@ -4,15 +4,15 @@
 
 version: '3.6'
 
-{{- $has_mariadb := .Vars.system.mariadb.version -}}
+{{- $has_database := or (.Vars.system.mysql.version) (.Vars.system.mariadb.version) -}}
 {{- $has_redis := .Vars.system.redis.version -}}
 {{- $has_mailcatcher := .Vars.system.mailcatcher.version -}}
 {{- $has_meilisearch := .Vars.system.meilisearch.version -}}
 
-{{ if or ($has_mariadb) ($has_redis) ($has_meilisearch) }}
+{{ if or ($has_database) ($has_redis) ($has_meilisearch) }}
 
 volumes:
-    {{ if $has_mariadb -}}
+    {{ if $has_database -}}
     db-data:
     {{- end }}
     {{ if $has_redis -}}
@@ -25,12 +25,12 @@ volumes:
 
 services:
 
-{{- if $has_mariadb -}}
+{{- if $has_database -}}
+{{- $mysql := .Vars.system.mysql }}
 {{- $mariadb := .Vars.system.mariadb }}
 
   database:
-    image: 'mariadb:{{ $mariadb.version }}'
-    ports: [3306]
+    image: {{ if $mysql.version }}'mysql:{{ $mysql.version }}'{{ else }}'mariadb:{{ $mariadb.version }}'{{ end }}
     command: --max_allowed_packet=1024M
     environment:
       MYSQL_USER: 'app'
@@ -41,7 +41,11 @@ services:
     volumes:
       - db-data:/var/lib/mysql
       - .manala/init-db:/docker-entrypoint-initdb.d
+      {{- if $mysql.version }}
+      - .manala/config-db/99-additional-config.cnf:/etc/mysql/conf.d/99-additional-config.cnf
+      {{- else }}
       - .manala/config-db/99-additional-config.cnf:/etc/mysql/mariadb.conf.d/99-additional-config.cnf
+      {{- end }}
     healthcheck:
       test: mysqladmin ping --silent
       interval: 10s
@@ -50,7 +54,7 @@ services:
 
 {{- end }}
 
-{{- if $has_mariadb }}
+{{- if $has_database }}
 
   phpmyadmin:
     image: phpmyadmin
@@ -108,3 +112,4 @@ services:
       com.symfony.server.service-prefix: 'MEILISEARCH'
 
 {{- end }}
+

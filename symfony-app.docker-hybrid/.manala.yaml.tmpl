@@ -7,7 +7,7 @@
 
 manala:
     recipe: symfony-app.docker-hybrid
-    repository: https://github.com/Wamiz/manala-recipes.git
+    repository: https://github.com/wamiz/manala-recipes.git
 
 ##########
 # System #
@@ -19,18 +19,41 @@ system:
 
     php:
         configs:
+            # Override instructions
+            - config: |
+                  ; Create a php.local.ini to override this file
+
             # XDebug
             - config: |
-                ; Comment/uncomment the following lines to disable/enable XDebug
-                ;zend_extension=xdebug.so
-                ;xdebug.remote_enable=1
-                ;xdebug.remote_autostart=1
+                  ; Add the following line to php.local.ini to enable xdebug's debugger
+                  ; XDebug 2
+                  ;zend_extension=xdebug.so
+                  ;xdebug.remote_enable=1
+                  ;xdebug.remote_autostart=1
+                  ;xdebug.mode=debug
+
+                  ; XDebug 3
+                  ;zend_extension=xdebug.so
+                  ;xdebug.start_with_request=yes
+                  ;xdebug.mode=debug
 
             # App
             - config: |
-                ;App specific configuration
+                  ;App specific configuration
 
-    {{- if .mariadb.version }}
+                  post_max_size=25M
+                  upload_max_filesize=20M
+                  memory_limit=-1
+
+    {{- if .mysql.version }}
+    mysql:
+        version: {{ .mysql.version | toYaml }}
+        init: |
+            CREATE DATABASE IF NOT EXISTS `app_test`;
+            GRANT ALL ON `app_test`.* TO 'app'@'%';
+            ALTER DATABASE app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+            ALTER DATABASE app_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    {{- else if .mariadb.version }}
     mariadb:
         version: {{ .mariadb.version | toYaml }}
         init: |
@@ -48,7 +71,7 @@ system:
         version: {{ .mailcatcher.version | toYaml }}
     {{- end }}
 
-    {{- if .mailcatcher.version }}
+    {{- if .meilisearch.version }}
     meilisearch:
         version: {{ .meilisearch.version | toYaml }}
     {{- end }}
