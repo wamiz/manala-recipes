@@ -36,8 +36,9 @@ services:
       TZ: {{ .Vars.system.timezone }}
     volumes:
       - db-data:/var/lib/mysql
-      {{- if $mysql.version }}
       - .manala/init-db:/docker-entrypoint-initdb.d
+      {{- if $mysql.version }}
+      - .manala/config-db/99-additional-config.cnf:/etc/mysql/conf.d/99-additional-config.cnf
       {{- else }}
       - .manala/config-db/99-additional-config.cnf:/etc/mysql/mariadb.conf.d/99-additional-config.cnf
       {{- end }}
