@@ -4,8 +4,9 @@
 
 {{- $has_database := or (.Vars.system.mysql.version) (.Vars.system.mariadb.version) }}
 {{- if $has_database }}
+{{- $port := or .Vars.system.mysql.port .Vars.system.mariadb.port }}
 
 services:
   database:
-    ports: [3306]
+    ports: [{{ if $port }}'{{ $port }}:3306'{{ else }}3306{{ end }}]
 {{- end }}
